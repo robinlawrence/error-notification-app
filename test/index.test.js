@@ -3,8 +3,8 @@ const nock = require('nock')
 const myProbotApp = require('..')
 const { Probot } = require('probot')
 // Requiring our fixtures
-const payload = require('./fixtures/issues.opened')
-const issueCreatedBody = { body: 'Thanks for opening this issue!' }
+const payload = require('./fixtures/check_suite.completed');
+const issueCreatedBody = { body: `### The build is failing as of ${payload.check_suite.head_sha}.`}
 const fs = require('fs')
 const path = require('path')
 
@@ -35,14 +35,14 @@ describe('My Probot app', () => {
 
     // Test that a comment is posted
     nock('https://api.github.com')
-      .post('/repos/hiimbex/testing-things/issues/1/comments', (body) => {
+      .post('/repos/robinlawrence/granola_generator/issues/2/comments', (body) => {
+        console.log('body', body)
         expect(body).toMatchObject(issueCreatedBody)
-        return true
       })
       .reply(200)
 
     // Receive a webhook event
-    await probot.receive({ name: 'issues', payload })
+    await probot.receive({ name: 'check_suite', payload })
   })
 
   afterEach(() => {

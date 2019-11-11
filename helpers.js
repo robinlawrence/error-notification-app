@@ -1,15 +1,15 @@
-const authToken = require('./authToken').authToken;
+const { authToken } = require('./authToken')
 
 const getRequest = (uri) => {
   return {
     uri,
     headers: {
-        'User-Agent': 'robinlawrence',
-        Accept: 'application/vnd.github.antiope-preview+json'
+      'User-Agent': 'robinlawrence',
+      Accept: 'application/vnd.github.antiope-preview+json'
     },
     json: true
-  };
-};
+  }
+}
 
 const postComment = (uri, message) => {
   return {
@@ -21,13 +21,13 @@ const postComment = (uri, message) => {
       Authorization: `token ${authToken}`
     },
     body: {
-      "body": message
+      body: message
     },
-    json: true,
-  };
-};
+    json: true
+  }
+}
 
 module.exports = {
   getRequest,
-  postComment,
+  postComment
 }
